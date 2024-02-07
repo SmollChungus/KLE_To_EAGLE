@@ -116,6 +116,9 @@ print(f"Eagle schematic script written to {file_name}")
 file_name = f'{keyboard_name}_board_script.scr'
 unit_to_mm = 19.05
 capacitor_out_offset = [-2.5, -1.75]
+capacitor1_out_wire_offset = [-0.96, -1.25]
+capacitor2_out_wire_offset = [-2.5, -1.25]
+
 capacitor_vcc_offset = [2.5, -1.75]
 with open(file_name, 'w', encoding='utf-8') as file:
     file.write("GRID MM 19.05 1;\n")
@@ -141,5 +144,10 @@ with open(file_name, 'w', encoding='utf-8') as file:
 
         file.write(f"ROTATE 'C_OUT_{label}' R90;\n")
         file.write(f"MIRROR 'C_OUT_{label}';\n")
+
+        # Board NETS
+        file.write(f"CHANGE WIDTH {(8/39.37)};\n")
+        file.write("CHANGE LAYER 16;\n")
+        file.write(f"WIRE '{label}' ({(x_pos_mm + capacitor1_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor1_out_wire_offset[1]):.2f}) ({(x_pos_mm + capacitor2_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor2_out_wire_offset[1]):.2f});\n")
 
 print(f"Eagle board script written to {file_name}")
