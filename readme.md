@@ -2,6 +2,12 @@
 
 Python based tool to directly generate the scaffold for an EAGLE schematic + board
 
+![%.sch%](https://i.imgur.com/sDS33eB.png)
+![%.brd%](https://i.imgur.com/HAYMNlP.png)
+
+
+
+
 
 ## To Do:
 EAGLE schematic.sch:
@@ -16,6 +22,7 @@ EAGLE schematic.sch:
 - [ ] chip + nets
 - [ ] chip + nets++
 - [ ] connector/usb
+- [ ] label spacebar with size
 
 EAGLE board.brd:
 
