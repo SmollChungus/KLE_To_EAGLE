@@ -50,7 +50,7 @@ print(f' Switch type set to: {connector_type}')
 
 
 
-# Beep boop - mostly setup for eagle to find the right footprint, needs work
+# Beep boop - mostly setup for eagle to find the right footprint, needs work, make Classes
 if switch_type in ['MX', 'MXHS']:
     switch_name = "KEYSWITCH-PLAIN-MXHSPCB-1U"  
     diode_name = "DIODE-SOD-323"  
@@ -115,10 +115,13 @@ print(f"Eagle schematic script written to {file_name}")
 ################# EAGLE .BRD ##################
 file_name = f'{keyboard_name}_board_script.scr'
 unit_to_mm = 19.05
+capacitor_out_offset = [-2.5, -1.75]
+capacitor_vcc_offset = [2.5, -1.75]
 with open(file_name, 'w', encoding='utf-8') as file:
     file.write("GRID MM 19.05 1;\n")
     file.write("GRID ALT MM 1.27;\n")
 
+    
     for i, key in enumerate(keyboard.keys):
         if key.width > 1:
             x_pos_mm = key.x * unit_to_mm + (0.5 * unit_to_mm * (key.width - 1)) 
@@ -129,5 +132,14 @@ with open(file_name, 'w', encoding='utf-8') as file:
 
         file.write(f"MOVE '{label}' ({x_pos_mm:.2f} {y_pos_mm:.2f});\n")
 
+        file.write(f"MOVE 'C_VCC_{label}' ({(x_pos_mm + capacitor_vcc_offset[0]):.2f} {y_pos_mm + capacitor_out_offset[1]:.2f});\n")
+
+        file.write(f"ROTATE 'C_VCC_{label}' R90;\n")
+        file.write(f"MIRROR 'C_VCC_{label}';\n")
+
+        file.write(f"MOVE 'C_OUT_{label}' ({(x_pos_mm + capacitor_out_offset[0]):.2f} {(y_pos_mm + capacitor_out_offset[1]):.2f});\n")
+
+        file.write(f"ROTATE 'C_OUT_{label}' R90;\n")
+        file.write(f"MIRROR 'C_OUT_{label}';\n")
 
 print(f"Eagle board script written to {file_name}")
