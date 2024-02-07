@@ -120,6 +120,19 @@ print(f"Eagle schematic script written to {file_name}")
 
 ################### EAGLE .BRD ################
 file_name = f'{keyboard_name}_board_script.scr'
-
+unit_to_mm = 19.05
 with open(file_name, 'w', encoding='utf-8') as file:
-    pass
+    # Set the grid and the grid alternate
+    file.write("GRID MM 19.05 1;\n")
+    file.write("GRID ALT MM 1.27;\n")
+
+    for i, key in enumerate(keyboard.keys):
+        x_pos_mm = key.x * unit_to_mm
+        y_pos_mm = key.y * unit_to_mm
+        label = key.labels[0].upper() if key.labels else f"SW{i+1}"
+
+        file.write(f"MOVE '{label}' ({x_pos_mm:.2f} {y_pos_mm:.2f});\n")
+
+        # If components need mirroring or specific rotation, adjust the ROTATE command accordingly
+
+print(f"Eagle board script written to {file_name}")
