@@ -9,11 +9,20 @@ with open('test.json', 'r', encoding='utf-8') as file:
 keyboard = deserialize(json_data)
 print('Deserialization done, list of keys imported: ')
 
+# Track labels to manage duplicates
+label_counts = {}
+
 # Iterate over the keys and update labels
 for key in keyboard.keys:
-    if hasattr(key, 'labels') and key.labels:  
+    if hasattr(key, 'labels') and key.labels:
+        # Process each label for special characters
         key.labels = [replace_special_chars_in_label(label) if label else label for label in key.labels]
-    
+        # Check for duplicate labels and rename accordingly
+        if key.labels[0] in label_counts:
+            label_counts[key.labels[0]] += 1
+            key.labels[0] += str(label_counts[key.labels[0]])
+        else:
+            label_counts[key.labels[0]] = 0
 
 ## Debug
 for key in keyboard.keys:
@@ -65,36 +74,40 @@ if switch_type == 'HE':
     multiplexer_amount = 1 + ( 40 // 16)
     print(multiplexer_amount)
 
-# File to write the script to
-file_name = (f'{keyboard_name}_schematic_script.scr')
+
+################# EAGLE SCHEMATIC #################
+file_name = f'{keyboard_name}_schematic_script.scr'
 
 with open(file_name, 'w', encoding='utf-8') as file:
-    # Write header information
     file.write("GRID ON;\n")
     file.write("GRID IN 0.1 1;\n")
     file.write("GRID ALT IN 0.01;\n")
     file.write("SET WIRE_BEND 2;\n\n")
 
-    # Iterate over keys and write component placement and net commands
-    for i, key in enumerate(keyboard.keys):
-        x_pos = key.x + 0.1 * i
-        y_pos = key.y * -1.1  
-        label = key.labels[0].upper() if key.labels else f"SW{i+1}"  # Use the first label or a default
+    current_row_y = 0
+    row_index = 0
 
-        # Write the switch and capacitor placement commands
+    for i, key in enumerate(keyboard.keys):
+        if key.y != current_row_y:
+            current_row_y = key.y
+            row_index = 0
+        else:
+            row_index += 1
+
+        x_pos = key.x + (0.1 * row_index)
+        y_pos = (-1.1 * key.y) 
+        label = key.labels[0].upper() if key.labels else f"SW{i+1}"  
         file.write(f"ADD {switch_name} '{label}' ({x_pos:.2f} {y_pos:.2f});\n")
         file.write(f"ADD {capacitor_name} C_VCC_{label} R90 ({x_pos + capacitor_vcc_offset[0]:.2f} {y_pos + capacitor_vcc_offset[1]:.2f});\n")
         file.write(f"ADD {capacitor_name} C_OUT_{label} R90 ({x_pos + capacitor_out_offset[0]:.2f} {y_pos + capacitor_out_offset[1]:.2f});\n")
         file.write(f"VALUE C_VCC_{label} {c_vcc_value};\n")
         file.write(f"VALUE C_OUT_{label} {c_out_value};\n\n")
-        
-        # Write the net commands
-        # cap to vcc
+        # Cap to vcc
         file.write(f"NET VCC ({x_pos + net_vcc_offset[0]:.2f} {y_pos + net_vcc_offset[1]:.2f}) ({x_pos + net_vcc_offset[0]:.2f} {y_pos + 0.6 + net_vcc_offset[1]:.2f});\n\n")
         file.write(f"NET VCC ({x_pos + net_vcc_offset[0]:.2f} {y_pos + 0.6 + net_vcc_offset[1]:.2f}) ({x_pos:.2f} {y_pos + 0.5:.2f});\n\n")
-        # cap to analog out
+        # Cap to analog out
         file.write(f"NET {label} ({x_pos + net_out_offset[0]:.2f} {y_pos + net_out_offset[1]:.2f}) ({x_pos + net_out_offset[0]} {y_pos -0.1});\n\n")
-        # caps and sensor to ground
+        # Caps and sensor to ground
         file.write(f"NET GND ({x_pos } {y_pos - 0.5}) ({x_pos - 0.4} {y_pos - 0.5});\n")
         file.write(f"NET GND ({x_pos } {y_pos - 0.5}) ({x_pos + 0.5} {y_pos - 0.5});\n\n")
 
@@ -102,6 +115,11 @@ with open(file_name, 'w', encoding='utf-8') as file:
     # Write footer information if needed
     # file.write("WINDOW FIT;\n")
 
-print(f"Eagle script written to {file_name}")
+print(f"Eagle schematic script written to {file_name}")
 
 
+################### EAGLE .BRD ################
+file_name = f'{keyboard_name}_board_script.scr'
+
+with open(file_name, 'w', encoding='utf-8') as file:
+    pass
