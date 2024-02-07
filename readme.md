@@ -1,6 +1,6 @@
 # KLE to Eagle PCB converter
 
-python based converting tool to directly generate the scaffold for an EAGLE schematic + board
+Python based tool to directly generate the scaffold for an EAGLE schematic + board
 
 
 ## To Do:
