@@ -13,10 +13,8 @@ set diode | capacitor size:    (323*, 123*, BAV70* | 0402, 0603, 0804)
 set connector type:            (USB, JST, EZMATE)
 
 
-Make sure to import the Keyboard_Analog.lbr library and activating it inside EAGLE before running the .scr file.
-
+Make sure to import the Keyboard_Analog.lbr library and activate it inside EAGLE before running the .scr file.
 Hit run script in the EAGLE schematic editor and select keyboard_schematic_script.scr
-
 Open up EAGLE board editor, hit run script, and select keyboard_board_script.scr
 
 Happy routing!
