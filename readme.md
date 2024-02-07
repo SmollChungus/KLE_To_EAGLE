@@ -29,4 +29,6 @@ EAGLE board.brd:
 
 bugs:
 - [ ] remove spaces from keyboard.key.label for EAGLE script syntax
-- [ ] fix '&' label collision with eagle syntax
+- [ ] fix '&' and '*' label collision with eagle scripting syntax
+- [ ] fix bracket label collision zzz
+- [ ] numpad double labels collision
