@@ -3,14 +3,20 @@
 Python based tool to directly generate the scaffold for an EAGLE schematic + board
 
 To generate the .scr EAGLE script file, download your keyboard.json from KLE.
+
 run main.py in terminal, follow command line.
 
 set keyswitch type:            (MX, MXHS, HE, ALPS*, ALPSMX*)
+
 set diode | capacitor size:    (323*, 123*, BAV70* | 0402, 0603, 0804)
+
 set connector type:            (USB, JST, EZMATE)
 
+
 Make sure to import the Keyboard_Analog.lbr library and activating it inside EAGLE before running the .scr file.
+
 Hit run script in the EAGLE schematic editor and select keyboard_schematic_script.scr
+
 Open up EAGLE board editor, hit run script, and select keyboard_board_script.scr
 
 Happy routing!
