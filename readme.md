@@ -32,3 +32,4 @@ bugs:
 - [ ] fix '&' and '*' label collision with eagle scripting syntax
 - [ ] fix bracket label collision zzz
 - [ ] numpad double labels collision
+- [ ] schematic y drift
