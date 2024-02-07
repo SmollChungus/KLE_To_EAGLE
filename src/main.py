@@ -1,15 +1,21 @@
 import json
 from util.serial import deserialize
-
+from util.format import replace_special_chars_in_label
 
 # KLE JSON parsing
 with open('test.json', 'r', encoding='utf-8') as file:
-    json_data = file.read()
+    json_data = json.load(file)  
 
-parsed_kle_json = json.loads(json_data)
+keyboard = deserialize(json_data)
+print('Deserialization done, list of keys imported: ')
 
-keyboard = deserialize(parsed_kle_json)
-print('deserialization done, list of keys imported: ')
+# Iterate over the keys and update labels
+for key in keyboard.keys:
+    if hasattr(key, 'labels') and key.labels:  
+        key.labels = [replace_special_chars_in_label(label) if label else label for label in key.labels]
+    
+
+## Debug
 for key in keyboard.keys:
     print(f'{key}\n')
 
@@ -44,8 +50,8 @@ print(f' Switch type set to: {connector_type}')
 if switch_type in ['MX', 'MXHS']:
     switch_name = "KEYSWITCH-PLAIN-MXHSPCB-1U"  
     diode_name = "DIODE-SOD-323"  
-    diode_offset = [0.10, 0.70]  # Offset of diode relative to the switch
-    net_offset = [0.10, 0.40]  # Offset for the net connection point
+    diode_offset = [0.10, 0.70] 
+    net_offset = [0.10, 0.40]  
 
 if switch_type == 'HE':
     switch_name = 'KEYSWITCH-HE'
@@ -62,7 +68,7 @@ if switch_type == 'HE':
 # File to write the script to
 file_name = (f'{keyboard_name}_schematic_script.scr')
 
-with open(file_name, 'w') as file:
+with open(file_name, 'w', encoding='utf-8') as file:
     # Write header information
     file.write("GRID ON;\n")
     file.write("GRID IN 0.1 1;\n")
