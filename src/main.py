@@ -1,6 +1,7 @@
 import json
 from util.serial import deserialize
 
+
 # KLE JSON parsing
 with open('test.json', 'r', encoding='utf-8') as file:
     json_data = file.read()
@@ -15,7 +16,7 @@ for key in keyboard.keys:
 
 # User Input Setup
 print("enter keyboard name:")
-keyboard_name = 'test'    
+keyboard_name = 'test'  
 switch_type = "HE"
 connector_type = "JST"
 capacitor_size = "0402"
@@ -71,11 +72,11 @@ with open(file_name, 'w') as file:
     # Iterate over keys and write component placement and net commands
     for i, key in enumerate(keyboard.keys):
         x_pos = key.x + 0.1 * i
-        y_pos = key.y
+        y_pos = key.y * -1.1  
         label = key.labels[0].upper() if key.labels else f"SW{i+1}"  # Use the first label or a default
 
         # Write the switch and capacitor placement commands
-        file.write(f"ADD {switch_name} {label} ({x_pos:.2f} {y_pos:.2f});\n")
+        file.write(f"ADD {switch_name} '{label}' ({x_pos:.2f} {y_pos:.2f});\n")
         file.write(f"ADD {capacitor_name} C_VCC_{label} R90 ({x_pos + capacitor_vcc_offset[0]:.2f} {y_pos + capacitor_vcc_offset[1]:.2f});\n")
         file.write(f"ADD {capacitor_name} C_OUT_{label} R90 ({x_pos + capacitor_out_offset[0]:.2f} {y_pos + capacitor_out_offset[1]:.2f});\n")
         file.write(f"VALUE C_VCC_{label} {c_vcc_value};\n")
