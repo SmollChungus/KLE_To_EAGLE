@@ -127,8 +127,11 @@ with open(file_name, 'w', encoding='utf-8') as file:
     file.write("GRID ALT MM 1.27;\n")
 
     for i, key in enumerate(keyboard.keys):
-        x_pos_mm = key.x * unit_to_mm
-        y_pos_mm = key.y * unit_to_mm
+        if key.width > 1:
+            x_pos_mm = key.x * unit_to_mm + (0.5 * 19.05 * (key.width -1)) 
+        else:
+            x_pos_mm = key.x * unit_to_mm
+        y_pos_mm = key.y * unit_to_mm * -1
         label = key.labels[0].upper() if key.labels else f"SW{i+1}"
 
         file.write(f"MOVE '{label}' ({x_pos_mm:.2f} {y_pos_mm:.2f});\n")
