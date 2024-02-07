@@ -2,22 +2,17 @@ import json
 from util.serial import deserialize
 from util.format import replace_special_chars_in_label
 
-# KLE JSON parsing
 with open('test.json', 'r', encoding='utf-8') as file:
     json_data = json.load(file)  
 
 keyboard = deserialize(json_data)
 print('Deserialization done, list of keys imported: ')
 
-# Track labels to manage duplicates
 label_counts = {}
 
-# Iterate over the keys and update labels
 for key in keyboard.keys:
     if hasattr(key, 'labels') and key.labels:
-        # Process each label for special characters
         key.labels = [replace_special_chars_in_label(label) if label else label for label in key.labels]
-        # Check for duplicate labels and rename accordingly
         if key.labels[0] in label_counts:
             label_counts[key.labels[0]] += 1
             key.labels[0] += str(label_counts[key.labels[0]])
@@ -112,23 +107,21 @@ with open(file_name, 'w', encoding='utf-8') as file:
         file.write(f"NET GND ({x_pos } {y_pos - 0.5}) ({x_pos + 0.5} {y_pos - 0.5});\n\n")
 
 
-    # Write footer information if needed
-    # file.write("WINDOW FIT;\n")
+    file.write("WINDOW FIT;\n")
 
 print(f"Eagle schematic script written to {file_name}")
 
 
-################### EAGLE .BRD ################
+################# EAGLE .BRD ##################
 file_name = f'{keyboard_name}_board_script.scr'
 unit_to_mm = 19.05
 with open(file_name, 'w', encoding='utf-8') as file:
-    # Set the grid and the grid alternate
     file.write("GRID MM 19.05 1;\n")
     file.write("GRID ALT MM 1.27;\n")
 
     for i, key in enumerate(keyboard.keys):
         if key.width > 1:
-            x_pos_mm = key.x * unit_to_mm + (0.5 * 19.05 * (key.width -1)) 
+            x_pos_mm = key.x * unit_to_mm + (0.5 * unit_to_mm * (key.width - 1)) 
         else:
             x_pos_mm = key.x * unit_to_mm
         y_pos_mm = key.y * unit_to_mm * -1
@@ -136,6 +129,5 @@ with open(file_name, 'w', encoding='utf-8') as file:
 
         file.write(f"MOVE '{label}' ({x_pos_mm:.2f} {y_pos_mm:.2f});\n")
 
-        # If components need mirroring or specific rotation, adjust the ROTATE command accordingly
 
 print(f"Eagle board script written to {file_name}")
