@@ -3,8 +3,8 @@
 python based converting tool to directly generate the scaffold for an EAGLE schematic + board
 
 
-## to do
-EAGLE schematic.sch
+## To Do:
+EAGLE schematic.sch:
 
 - [x] user config inputs 
 - [x] switches
@@ -17,16 +17,16 @@ EAGLE schematic.sch
 - [ ] chip + nets++
 - [ ] connector/usb
 
- EAGLE board.brd
- ==========
+EAGLE board.brd:
+
 - [ ] switch placement
 - [ ] capacitor placement
 - [ ] diode placement
 - [ ] chip + components placement
 
- BOM generation/cleaner
+ BOM generation/cleaner:
 - [ ] beep
 
-bugs
+bugs:
 - [ ] remove spaces from keyboard.key.label for EAGLE script syntax
 - [ ] fix '&' label collision with eagle syntax
