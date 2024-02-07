@@ -1,2 +1,2 @@
 src/util/__pycache__/
-src/util/test_schematic.scr
+src/*.scr
