@@ -4,10 +4,10 @@
 To generate the .scr EAGLE script file, download your keyboard.json from KLE.<br>
 run main.py in terminal, follow command line.<br>
 </p>
-<p>
-> set keyswitch type:            (MX, MXHS, HE, ALPS*, ALPSMX*) <br>
-> set diode | capacitor size:    (323*, 123*, BAV70* | 0402, 0603, 0804)<br>
-> set connector type:            (USB, JST, EZMATE)<br>
+><p>
+set keyswitch type:            (MX, MXHS, HE, ALPS*, ALPSMX*) <br>
+set diode | capacitor size:    (323*, 123*, BAV70* | 0402, 0603, 0804)<br>
+set connector type:            (USB, JST, EZMATE)<br>
 </p>
 
 <p> Make sure to import the Keyboard_Analog.lbr library and activate it inside EAGLE before running the .scr file. <br>
