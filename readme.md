@@ -71,3 +71,6 @@ bugs:
 - [x] fix bracket label collision zzz
 - [x] numpad double labels collision
 - [x] schematic y drift
+- [ ] 1 trace from vout cap and 2 from vcc cap are 0.01mm off grid
+- [ ] vcc arc 0.01mm off grid?
+- [ ] missing 3D parts in lib
