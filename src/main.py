@@ -2,7 +2,7 @@ import json
 from util.serial import deserialize
 from util.format import replace_special_chars_in_label
 
-with open('test.json', 'r', encoding='utf-8') as file:
+with open('he60.json', 'r', encoding='utf-8') as file:
     json_data = json.load(file)  
 
 keyboard = deserialize(json_data)
@@ -26,10 +26,11 @@ for key in keyboard.keys:
 
 # User Input Setup
 print("enter keyboard name:")
-keyboard_name = 'test'  
+keyboard_name = 'he60'  
 switch_type = "HE"
 connector_type = "JST"
 capacitor_size = "0402"
+layer_count = 2
 
 print('MX | MXHS | HE')
 while switch_type not in ['HE', 'MX', 'MXHS']:
@@ -105,8 +106,6 @@ with open(file_name, 'w', encoding='utf-8') as file:
         # Caps and sensor to ground
         file.write(f"NET GND ({x_pos } {y_pos - 0.5}) ({x_pos - 0.4} {y_pos - 0.5});\n")
         file.write(f"NET GND ({x_pos } {y_pos - 0.5}) ({x_pos + 0.5} {y_pos - 0.5});\n\n")
-
-
     file.write("WINDOW FIT;\n")
 
 print(f"Eagle schematic script written to {file_name}")
@@ -149,5 +148,19 @@ with open(file_name, 'w', encoding='utf-8') as file:
         file.write(f"CHANGE WIDTH {(8/39.37)};\n")
         file.write("CHANGE LAYER 16;\n")
         file.write(f"WIRE '{label}' ({(x_pos_mm + capacitor1_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor1_out_wire_offset[1]):.2f}) ({(x_pos_mm + capacitor2_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor2_out_wire_offset[1]):.2f});\n")
-
+        if layer_count == 2:
+            file.write(f"WIRE '{label}' ({(x_pos_mm + capacitor2_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor2_out_wire_offset[1]):.2f}) ({(x_pos_mm - 1 + capacitor2_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor2_out_wire_offset[1]):.2f});\n")
+            file.write(f"VIA '{label}' 0.35 1-16 (>0 0) ({(x_pos_mm - 1 + capacitor2_out_wire_offset[0]):.2f} {(y_pos_mm + capacitor2_out_wire_offset[1]):.2f});\n")
+            file.write(f"VIA 'GND' 0.35 1-16 (>0 0) ({(x_pos_mm - 1):.2f} {(y_pos_mm + 1.25):.2f});\n")
+            file.write(f"CHANGE WIDTH {(16/39.37)};\n")      
+            file.write(f"WIRE 'VCC' ({(x_pos_mm + 0.95):.2f} {(y_pos_mm - 1.24):.2f}) ({(x_pos_mm + 2.49):.2f} {(y_pos_mm - 1.24):.2f});\n")
+            file.write(f"WIRE 'VCC' ({(x_pos_mm + 2.5):.2f} {(y_pos_mm - 1.24):.2f}) ({(x_pos_mm + 2.5):.2f} {(y_pos_mm - 0.3):.2f});\n")
+            file.write(f"VIA 'VCC' 0.35 1-16 (>0 0) ({(x_pos_mm +2.5):.2f} {(y_pos_mm - 0.3):.2f});\n")
+            file.write(f"CHANGE LAYER 1;\n")
+            file.write(f"WIRE 'VCC' ({(x_pos_mm + 2.5):.2f} {(y_pos_mm - 0.3):.2f}) ({(x_pos_mm + 2.5):.2f} {(y_pos_mm + 2.04):.2f});\n")
+            file.write(f"ARC CW 'VCC' ({(x_pos_mm + 2.5)} {(y_pos_mm + 2.04)}) ({(x_pos_mm + 2.5 + 1)} {(y_pos_mm + 2.04)}) ({(x_pos_mm + 2.5 + 0.5)} {(y_pos_mm + 2.04 + 0.5)});\n")
+            file.write(f"ARC CCW 'VCC' ({(x_pos_mm + 2.5)} {(y_pos_mm + 2.04)}) ({(x_pos_mm + 2.5 - 1)} {(y_pos_mm + 2.04)}) ({(x_pos_mm + 2.5 - 0.5)} {(y_pos_mm + 2.04 + 0.5)});\n")
+            file.write(f"WIRE 'VCC' ({(x_pos_mm + 3):.2f} {(y_pos_mm + 2.54):.2f}) ({(x_pos_mm + 22.05):.2f} {(y_pos_mm + 2.54):.2f});\n")
+            file.write(f"GRID MM 1 1;\n")
+            file.write(f"GRID ALT MIL 0.25 5;\n")
 print(f"Eagle board script written to {file_name}")

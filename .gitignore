@@ -1,3 +1,6 @@
 src/util/__pycache__/
 src/*.scr
 notes.md
+src/*.json
+*.zip
+*.step
